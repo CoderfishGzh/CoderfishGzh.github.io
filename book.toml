@@ -1,0 +1,6 @@
+[book]
+authors = ["CoderfishGzh"]
+language = "en"
+multilingual = false
+src = "src"
+title = "学习资料"
