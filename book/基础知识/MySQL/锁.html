@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>事务 - 学习资料</title>
+        <title>锁 - 学习资料</title>
 
 
         <!-- Custom HTML head -->
@@ -83,7 +83,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../../index.html">个人简介</a></li><li class="chapter-item expanded affix "><li class="part-title">基础知识</li><li class="chapter-item expanded "><a href="../../基础知识.html"><strong aria-hidden="true">1.</strong> MySQL</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../基础知识/MySQL/事务.html" class="active"><strong aria-hidden="true">1.1.</strong> 事务</a></li><li class="chapter-item expanded "><a href="../../基础知识/MySQL/索引.html"><strong aria-hidden="true">1.2.</strong> 索引</a></li><li class="chapter-item expanded "><a href="../../基础知识/MySQL/锁.html"><strong aria-hidden="true">1.3.</strong> 锁</a></li><li class="chapter-item expanded "><a href="../../基础知识/MySQL/SQL语句.html"><strong aria-hidden="true">1.4.</strong> SQL语句</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../../index.html">个人简介</a></li><li class="chapter-item expanded affix "><li class="part-title">基础知识</li><li class="chapter-item expanded "><a href="../../基础知识.html"><strong aria-hidden="true">1.</strong> MySQL</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../基础知识/MySQL/事务.html"><strong aria-hidden="true">1.1.</strong> 事务</a></li><li class="chapter-item expanded "><a href="../../基础知识/MySQL/索引.html"><strong aria-hidden="true">1.2.</strong> 索引</a></li><li class="chapter-item expanded "><a href="../../基础知识/MySQL/锁.html" class="active"><strong aria-hidden="true">1.3.</strong> 锁</a></li><li class="chapter-item expanded "><a href="../../基础知识/MySQL/SQL语句.html"><strong aria-hidden="true">1.4.</strong> SQL语句</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -144,16 +144,46 @@
 
                 <div id="content" class="content">
                     <main>
-                        
+                        <p>行级锁：</p>
+<ul>
+<li>Record Lock 记录锁：锁定一条记录</li>
+<li>Gap Lock 间隙锁： 锁定id为（3，5)间隙锁，无法插入id=4的记录</li>
+<li>Next-Key Lock 临键锁，锁定一个范围，并锁定记录本身。有一个(3, 5]的next-key lock，其他事务不能插入id = 4的事务，也不能修改和删除id=5的记录</li>
+</ul>
+<p>MySQL是怎么加行级锁的</p>
+<ul>
+<li>
+<p>唯一索引等值查询</p>
+<ul>
+<li>记录存在：在索引树定位到该记录后，将该记录的索引中的next-key lock退化成记录锁</li>
+<li>记录不存在：在索引树找到第一条大于该查询记录的记录时，将next-key lock退化成间隙锁</li>
+</ul>
+</li>
+<li>
+<p>非唯一索引等值查询</p>
+<ul>
+<li>记录存在：由于不是唯一索引，所以肯定存在索引值相同的记录，于是非唯一索引等值查询的过程是一个扫描的过程，直到扫描到第一个不符合条件的二级索引记录就停止扫描，然后 <strong>在扫描的过程中，对扫描到的二级索引记录加的是 next-key 锁，而对于第一个不符合条件的二级索引记录，该二级索引的 next-key 锁会退化成间隙锁。同时，在符合查询条件的记录的主键索引上加记录锁</strong> 。</li>
+<li>记录不存在：<strong>扫描到第一条不符合条件的二级索引记录，该二级索引的 next-key 锁会退化成间隙锁。因为不存在满足查询条件的记录，所以不会对主键索引加锁</strong> 。</li>
+</ul>
+</li>
+<li>
+<p>非唯一索引和主键索引范围查询加锁规则的不同</p>
+<ul>
+<li>唯一索引在满足一些条件的时候，索引的 next-key lock 退化为间隙锁或者记录锁。</li>
+<li>非唯一索引范围查询，索引的 next-key lock 不会退化为间隙锁和记录锁。</li>
+</ul>
+</li>
+</ul>
+
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../基础知识.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../基础知识/MySQL/索引.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="../../基础知识/MySQL/索引.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../../基础知识/MySQL/SQL语句.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -163,11 +193,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../基础知识.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../基础知识/MySQL/索引.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="../../基础知识/MySQL/索引.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../../基础知识/MySQL/SQL语句.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
