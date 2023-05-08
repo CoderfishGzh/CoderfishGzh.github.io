@@ -84,7 +84,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">个人简介</a></li><li class="chapter-item expanded affix "><li class="part-title">基础知识</li><li class="chapter-item expanded "><a href="基础知识.html"><strong aria-hidden="true">1.</strong> MySQL</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="基础知识/MySQL/事务.html"><strong aria-hidden="true">1.1.</strong> 事务</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">个人简介</a></li><li class="chapter-item expanded affix "><li class="part-title">基础知识</li><li class="chapter-item expanded "><a href="基础知识.html"><strong aria-hidden="true">1.</strong> MySQL</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="基础知识/MySQL/事务.html"><strong aria-hidden="true">1.1.</strong> 事务</a></li><li class="chapter-item expanded "><a href="基础知识/MySQL/索引.html"><strong aria-hidden="true">1.2.</strong> 索引</a></li><li class="chapter-item expanded "><a href="基础知识/MySQL/锁.html"><strong aria-hidden="true">1.3.</strong> 锁</a></li><li class="chapter-item expanded "><a href="基础知识/MySQL/SQL语句.html"><strong aria-hidden="true">1.4.</strong> SQL语句</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -147,7 +147,52 @@
                     <main>
                         <h1 id="个人简介"><a class="header" href="#个人简介">个人简介</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="mysql"><a class="header" href="#mysql">MySQL</a></h1>
-<div style="break-before: page; page-break-before: always;"></div>
+<div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><h2 id="索引失效的几种情况"><a class="header" href="#索引失效的几种情况">索引失效的几种情况</a></h2>
+<p>1）左模糊或者左右模糊： like %xx 或者 like %xx%</p>
+<p>2）对查询条件使用了函数或者表达式计算</p>
+<pre><code class="language-select">select * from xxx where (age + 1) = 1;
+</code></pre>
+<p>3）字符串和数字进行比较</p>
+<p>MySQL在进行比较时，会将字符串自动转换成数字再进行比较。如果字符串是索引列，条件参数是数字，会发生隐式转换，即对字段使用了函数，因此索引会失效。</p>
+<p>4）联合索引要能够正确遵循最左匹配原则</p>
+<p>5）where子句中，or前的条件列是索引列，or后的条件不是索引列</p>
+<div style="break-before: page; page-break-before: always;"></div><p>行级锁：</p>
+<ul>
+<li>Record Lock 记录锁：锁定一条记录</li>
+<li>Gap Lock 间隙锁： 锁定id为（3，5)间隙锁，无法插入id=4的记录</li>
+<li>Next-Key Lock 临键锁，锁定一个范围，并锁定记录本身。有一个(3, 5]的next-key lock，其他事务不能插入id = 4的事务，也不能修改和删除id=5的记录</li>
+</ul>
+<p>MySQL是怎么加行级锁的</p>
+<ul>
+<li>
+<p>唯一索引等值查询</p>
+<ul>
+<li>记录存在：在索引树定位到该记录后，将该记录的索引中的next-key lock退化成记录锁</li>
+<li>记录不存在：在索引树找到第一条大于该查询记录的记录时，将next-key lock退化成间隙锁</li>
+</ul>
+</li>
+<li>
+<p>非唯一索引等值查询</p>
+<ul>
+<li>记录存在：由于不是唯一索引，所以肯定存在索引值相同的记录，于是非唯一索引等值查询的过程是一个扫描的过程，直到扫描到第一个不符合条件的二级索引记录就停止扫描，然后 <strong>在扫描的过程中，对扫描到的二级索引记录加的是 next-key 锁，而对于第一个不符合条件的二级索引记录，该二级索引的 next-key 锁会退化成间隙锁。同时，在符合查询条件的记录的主键索引上加记录锁</strong> 。</li>
+<li>记录不存在：<strong>扫描到第一条不符合条件的二级索引记录，该二级索引的 next-key 锁会退化成间隙锁。因为不存在满足查询条件的记录，所以不会对主键索引加锁</strong> 。</li>
+</ul>
+</li>
+<li>
+<p>非唯一索引和主键索引范围查询加锁规则的不同</p>
+<ul>
+<li>唯一索引在满足一些条件的时候，索引的 next-key lock 退化为间隙锁或者记录锁。</li>
+<li>非唯一索引范围查询，索引的 next-key lock 不会退化为间隙锁和记录锁。</li>
+</ul>
+</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="连表查询"><a class="header" href="#连表查询">连表查询</a></h2>
+<ul>
+<li>INNER JOIN(内连接、等值连接):获取两个表中字段匹配关系的记录。</li>
+<li>LEFT JOIN(左连接): 获取左表所有记录，即使右表没有对应匹配的记录。</li>
+<li>RIGHT JOIN(右连接): 用于获取右表所有记录、即使坐标没有对应匹配的记录。</li>
+</ul>
+
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">

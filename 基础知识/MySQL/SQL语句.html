@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>事务 - 学习资料</title>
+        <title>SQL语句 - 学习资料</title>
 
 
         <!-- Custom HTML head -->
@@ -83,7 +83,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../../index.html">个人简介</a></li><li class="chapter-item expanded affix "><li class="part-title">基础知识</li><li class="chapter-item expanded "><a href="../../基础知识.html"><strong aria-hidden="true">1.</strong> MySQL</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../基础知识/MySQL/事务.html" class="active"><strong aria-hidden="true">1.1.</strong> 事务</a></li><li class="chapter-item expanded "><a href="../../基础知识/MySQL/索引.html"><strong aria-hidden="true">1.2.</strong> 索引</a></li><li class="chapter-item expanded "><a href="../../基础知识/MySQL/锁.html"><strong aria-hidden="true">1.3.</strong> 锁</a></li><li class="chapter-item expanded "><a href="../../基础知识/MySQL/SQL语句.html"><strong aria-hidden="true">1.4.</strong> SQL语句</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../../index.html">个人简介</a></li><li class="chapter-item expanded affix "><li class="part-title">基础知识</li><li class="chapter-item expanded "><a href="../../基础知识.html"><strong aria-hidden="true">1.</strong> MySQL</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../基础知识/MySQL/事务.html"><strong aria-hidden="true">1.1.</strong> 事务</a></li><li class="chapter-item expanded "><a href="../../基础知识/MySQL/索引.html"><strong aria-hidden="true">1.2.</strong> 索引</a></li><li class="chapter-item expanded "><a href="../../基础知识/MySQL/锁.html"><strong aria-hidden="true">1.3.</strong> 锁</a></li><li class="chapter-item expanded "><a href="../../基础知识/MySQL/SQL语句.html" class="active"><strong aria-hidden="true">1.4.</strong> SQL语句</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -144,18 +144,21 @@
 
                 <div id="content" class="content">
                     <main>
-                        
+                        <h2 id="连表查询"><a class="header" href="#连表查询">连表查询</a></h2>
+<ul>
+<li>INNER JOIN(内连接、等值连接):获取两个表中字段匹配关系的记录。</li>
+<li>LEFT JOIN(左连接): 获取左表所有记录，即使右表没有对应匹配的记录。</li>
+<li>RIGHT JOIN(右连接): 用于获取右表所有记录、即使坐标没有对应匹配的记录。</li>
+</ul>
+
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../基础知识.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../基础知识/MySQL/锁.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="../../基础知识/MySQL/索引.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -163,13 +166,10 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../基础知识.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../基础知识/MySQL/锁.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="../../基础知识/MySQL/索引.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>
