@@ -84,7 +84,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">个人简介</a></li><li class="chapter-item expanded affix "><li class="part-title">基础知识</li><li class="chapter-item expanded "><a href="基础知识.html"><strong aria-hidden="true">1.</strong> MySQL</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="基础知识/MySQL/事务.html"><strong aria-hidden="true">1.1.</strong> 事务</a></li><li class="chapter-item expanded "><a href="基础知识/MySQL/索引.html"><strong aria-hidden="true">1.2.</strong> 索引</a></li><li class="chapter-item expanded "><a href="基础知识/MySQL/锁.html"><strong aria-hidden="true">1.3.</strong> 锁</a></li><li class="chapter-item expanded "><a href="基础知识/MySQL/SQL语句.html"><strong aria-hidden="true">1.4.</strong> SQL语句</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">个人简介</a></li><li class="chapter-item expanded affix "><li class="part-title">基础知识</li><li class="chapter-item expanded "><a href="基础知识/MySQL/MySQL.html"><strong aria-hidden="true">1.</strong> MySQL</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="基础知识/MySQL/事务.html"><strong aria-hidden="true">1.1.</strong> 事务</a></li><li class="chapter-item expanded "><a href="基础知识/MySQL/索引.html"><strong aria-hidden="true">1.2.</strong> 索引</a></li><li class="chapter-item expanded "><a href="基础知识/MySQL/锁.html"><strong aria-hidden="true">1.3.</strong> 锁</a></li><li class="chapter-item expanded "><a href="基础知识/MySQL/SQL语句.html"><strong aria-hidden="true">1.4.</strong> SQL语句</a></li></ol></li><li class="chapter-item expanded "><a href="基础知识/Docker/Docker.html"><strong aria-hidden="true">2.</strong> Docker</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="基础知识/Docker/mysql_yaml.html"><strong aria-hidden="true">2.1.</strong> MySQL-yaml</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> 项目实战经验</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="项目实践/SearchEngine/coreKv.html"><strong aria-hidden="true">3.1.</strong> 存储引擎-coreKv</a></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">3.1.1.</strong> 布隆过滤器</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.1.2.</strong> SStable</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.1.3.</strong> 缓存淘汰算法</div></li></ol></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -146,8 +146,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="个人简介"><a class="header" href="#个人简介">个人简介</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="mysql"><a class="header" href="#mysql">MySQL</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><h2 id="索引失效的几种情况"><a class="header" href="#索引失效的几种情况">索引失效的几种情况</a></h2>
+<div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><h2 id="索引失效的几种情况"><a class="header" href="#索引失效的几种情况">索引失效的几种情况</a></h2>
 <p>1）左模糊或者左右模糊： like %xx 或者 like %xx%</p>
 <p>2）对查询条件使用了函数或者表达式计算</p>
 <pre><code class="language-select">select * from xxx where (age + 1) = 1;
@@ -192,6 +191,28 @@
 <li>LEFT JOIN(左连接): 获取左表所有记录，即使右表没有对应匹配的记录。</li>
 <li>RIGHT JOIN(右连接): 用于获取右表所有记录、即使坐标没有对应匹配的记录。</li>
 </ul>
+<div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><p>MySQL docker 容器启动</p>
+<pre><code>version: '3.1'
+
+services: 
+    db:
+        image:mysql
+        container_name: default-name
+        ports:
+            # 使用宿主机的3306端口映射到容器的3306端口
+            # 宿主机:容器
+            - &quot;3306:3306&quot;
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: root_password
+</code></pre>
+<p>执行命令：</p>
+<pre><code>docker compose up -d 
+</code></pre>
+<p>进入MySQL：</p>
+<pre><code>mysql -P 3306 -u root - p
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="存储引擎-corekv"><a class="header" href="#存储引擎-corekv">存储引擎-coreKv</a></h1>
 
                     </main>
 
